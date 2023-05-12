@@ -2,13 +2,13 @@ import pandas as pd
 
 """
 Infos :
-    - Survived
+    - Survived  ( peut etre utilisé en bool (comme le sexe) )
     - PClass
-    - Sex
+    - Sex       ( 0 = "male"  1 = "female" ) ( False = "male"  True = "female )
     - Age
     - SibSP
     - Parch
-    - Embarked
+    - Embarked  ( 0 = "S"  1 = "C"  2 = "Q" )
 """
 
 df = pd.read_csv("titanic.csv", sep=";")
@@ -18,7 +18,7 @@ df["Age"].fillna(median_age, inplace=True)
 
 embark_points = ["S", "C", "Q"]
 embark_point = [0, 0, 0]
-for emb in range(len(df["Embarked"])):       # 0 = "S"  1 = "C"  2 = "Q"
+for emb in range(len(df["Embarked"])):       
     df["Embarked"][emb] = embark_points.index(df["Embarked"][emb])
     embark_point[emb] += 1
 df["Embarked"].fillna(embark_point.index(max(embark_point)), inplace=True)
