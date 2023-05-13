@@ -4,7 +4,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
-#Remplissage des cases vides
+'''
+Variable	Definition	                                    Key
+
+survival	Survival	                                    0 = No, 1 = Yes
+pclass	    Ticket class	                                1 = 1st, 2 = 2nd, 3 = 3rd
+sex	        Sex	                                            0 = female, 1 = male
+age	        Age in years	
+sibsp	    # of siblings / spouses aboard the Titanic	
+parch	    # of parents / children aboard the Titanic		
+embarked	Port of Embarkation	                            0 = Cherbourg, 1 = Queenstown, 2 = Southampton
+'''
+
+#Remplissage des cases vides du csv
 def fill_blanks(fichier):
     df = pandas.read_csv(fichier + ".csv", sep=";")
 
@@ -74,17 +86,7 @@ print(model.score(X_test, y_test))
 """
 
 
-'''
-Variable	Definition	                                    Key
 
-survival	Survival	                                    0 = No, 1 = Yes
-pclass	    Ticket class	                                1 = 1st, 2 = 2nd, 3 = 3rd
-sex	        Sex	                                            0 = female, 1 = male
-age	        Age in years	
-sibsp	    # of siblings / spouses aboard the Titanic	
-parch	    # of parents / children aboard the Titanic		
-embarked	Port of Embarkation	                            0 = Cherbourg, 1 = Queenstown, 2 = Southampton
-'''
 
 
 
