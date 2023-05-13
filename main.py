@@ -57,74 +57,74 @@ def predict_survive():
     try:
         potential_passenger_data.append(int(input("\n > En quelle classe etait le passager (1, 2 ou 3) : ")))
     except:
-        print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
         quit()
     else:
         if potential_passenger_data[0] == -1:
-            print("\n°°°°°°°°°°\nS'ettant accroché de force au bateau au moment du départ pour voyager clandestinement, le voyageur s'est surement noyé en tombant à l'eau avant même l'accident,le titanic etant fait d'un metal tres glissant... Il n'aurait donc surement pas survécu !\n°°°°°°°°°°\n")
+            print("\n - - - - - - - - - -\nS'ettant accroché de force au bateau au moment du départ pour voyager clandestinement, le voyageur s'est surement noyé en tombant à l'eau avant même l'accident,le titanic etant fait d'un metal tres glissant... Il n'aurait donc surement pas survécu !\n - - - - - - - - - -\n")
             quit()
         else:
             if not 0 < potential_passenger_data[0] <= 3:
-                print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+                print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
                 quit()
 
     try:
         potential_passenger_data.append(int(input("\n > Le passager était-il un homme ou une femme ? (femme: 0 ou homme: 1) : ")))
     except:
-        print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
         quit()
     else:
         if not 0 <= potential_passenger_data[1] <= 1:
-            print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
             quit()
 
     try:
         potential_passenger_data.append(int(input("\n > Quel est l'age du passager ? : ")))
     except:
-        print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
         quit()
     else:
         if not 1 <= potential_passenger_data[2] <= 100:
-            print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
             quit()
 
     try:
         potential_passenger_data.append(int(input("\n > Combien avait-il de frères/soeurs et/ou mari/femme à bord du navire ? : ")))
     except:
-        print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
         quit()
     else:
         if not 0 <= potential_passenger_data[3] <= 10:
-            print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
             quit()
 
     try:
         potential_passenger_data.append(int(input("\n > Combien avait-il de parents/enfants à bord : ")))
     except:
-        print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
         quit()
     else:
         if not 0 <= potential_passenger_data[4] <= 10:
-            print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
             quit()
 
     try:
         potential_passenger_data.append(int(input("\n > Par quel port est rentré votre passager (0: Cherbourg, 1: Queenstown, 2: Southampton) ? : ")))
     except:
-        print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
         quit()
     else:
         if not 0 <= potential_passenger_data[5] <= 2:
-            print("\n\n ! ! ! ! ! \n # INPUT ERROR #\n ! ! ! ! !\n")
+            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
             quit()
 
     if int(model.predict([potential_passenger_data])):
-        print("\n°°°°°°°°°°\nLe passager aurait surement survécu !\n°°°°°°°°°°\n")
+        print("\n - - - - - - - - - -\nLe passager aurait surement survécu !\n - - - - - - - - - -\n")              # __END__
     else:
-        print("\n°°°°°°°°°°\nLe passager n'aurait probablement pas survécu !\n°°°°°°°°°°\n")
+        print("\n - - - - - - - - - -\nLe passager n'aurait probablement pas survécu !\n - - - - - - - - - -\n")
 
 
-# Main:
+# __Main__:
 # Préparer les listes
 fill_blanks("train")
 fill_blanks("test")
