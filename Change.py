@@ -26,5 +26,4 @@ for emb in range(len(df["Embarked"])):
         pass
 df["Embarked"].fillna(embark_point.index(max(embark_point)), inplace=True)
 
-print(df["Embarked"])
 df.to_csv("titanic.csv", sep=";", index=False)
