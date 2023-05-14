@@ -3,6 +3,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
+from tkinter import *
+from tkinter import messagebox
+from PIL import Image, ImageTk
 
 '''
 Variable	Definition	                                    Key
@@ -13,7 +16,7 @@ sex	        Sex	                                            0 = female, 1 = male
 age	        Age in years	
 sibsp	    # of siblings / spouses aboard the Titanic	
 parch	    # of parents / children aboard the Titanic		
-embarked	Port of Embarkation	                            0 = Cherbourg, 1 = Queenstown, 2 = Southampton
+embarked	Port of Embarkation	                            0 = Southampton, 1 = Cherbourg, 2 = Queenstown
 '''
 
 #Remplissage des cases vides du csv
@@ -51,79 +54,25 @@ def fill_blanks(fichier):
     df.to_csv(fichier + ".csv", sep=";", index=False)
 
 
-def predict_survive():
-    #Récupérer les données d'un potentiel passager et verifier si il aurait potentiellement survécu
+def calc_proba():
+    global v_class
+    global v_sex
+    global v_age
+    global v_sibsp
+    global v_parch
+    global v_emb
+    SurvieImg = ImageTk.PhotoImage(Image.open("Images/img2.png"))
+    MortImg = ImageTk.PhotoImage(Image.open("Images/img1.png"))
+                                  
     potential_passenger_data = []
-    try:
-        potential_passenger_data.append(int(input("\n > En quelle classe etait le passager (1, 2 ou 3) : ")))
-    except:
-        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-        quit()
-    else:
-        if potential_passenger_data[0] == -1:
-            print("\n - - - - - - - - - -\nS'ettant accroché de force au bateau au moment du départ pour voyager clandestinement, le voyageur s'est surement noyé en tombant à l'eau avant même l'accident,le titanic etant fait d'un metal tres glissant... Il n'aurait donc surement pas survécu !\n - - - - - - - - - -\n")
-            quit()
-        else:
-            if not 0 < potential_passenger_data[0] <= 3:
-                print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-                quit()
-
-    try:
-        potential_passenger_data.append(int(input("\n > Le passager était-il un homme ou une femme ? (femme: 0 ou homme: 1) : ")))
-    except:
-        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-        quit()
-    else:
-        if not 0 <= potential_passenger_data[1] <= 1:
-            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-            quit()
-
-    try:
-        potential_passenger_data.append(int(input("\n > Quel est l'age du passager ? : ")))
-    except:
-        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-        quit()
-    else:
-        if not 1 <= potential_passenger_data[2] <= 100:
-            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-            quit()
-
-    try:
-        potential_passenger_data.append(int(input("\n > Combien avait-il de frères/soeurs et/ou mari/femme à bord du navire ? : ")))
-    except:
-        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-        quit()
-    else:
-        if not 0 <= potential_passenger_data[3] <= 10:
-            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-            quit()
-
-    try:
-        potential_passenger_data.append(int(input("\n > Combien avait-il de parents/enfants à bord : ")))
-    except:
-        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-        quit()
-    else:
-        if not 0 <= potential_passenger_data[4] <= 10:
-            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-            quit()
-
-    try:
-        potential_passenger_data.append(int(input("\n > Par quel port est rentré votre passager (0: Cherbourg, 1: Queenstown, 2: Southampton) ? : ")))
-    except:
-        print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-        quit()
-    else:
-        if not 0 <= potential_passenger_data[5] <= 2:
-            print("\n\n ! ! ! ! ! \nINPUT ERROR\n ! ! ! ! !\n")
-            quit()
+    potential_passenger_data.extend([v_class.get(), v_sex.get(), v_age.get(), v_sibsp.get(), v_parch.get(), v_emb.get()])
 
     if int(model.predict([potential_passenger_data])):
-        print("\n - - - - - - - - - -\nLe passager aurait surement survécu !\n - - - - - - - - - -\n")              # __END__
+        messagebox.showinfo( "Resultat", "Le passager aurait surement survécu !", image = SurvieImg)
     else:
-        print("\n - - - - - - - - - -\nLe passager n'aurait probablement pas survécu !\n - - - - - - - - - -\n")
-
-
+        messagebox.showinfo( "Resultat", "Le passager n'aurait probablement pas survécu !", image = MortImg)
+        
+       
 # __Main__:
 # Préparer les listes
 fill_blanks("train")
@@ -151,5 +100,78 @@ for data in X_test:
 if not (round(accuracy_score(y_test, y_pred), 10) * 100) >= 65:
     quit()
 
-# Prédire la survie potentielle d'un passager selon ses infos
-predict_survive()
+# ! ! ! Interface graphique avec Tkinter ! ! !
+# initialiser la fenêtre tkinter
+root = Tk()
+root.title("Survivants du Titanic")   # donner un nom àla fenêtre
+root.iconbitmap('/Images/boat.ico')
+root.geometry("500x450")    # définir une taille à la fenêtre
+root.resizable(False, False) #Pas possible de mofidier la taille de la fenêtre
+root.attributes('-alpha', 0.95)
+root.grid()
+
+# print notre intro
+intro_txt = StringVar()
+intro_txt.set('Ce programme à une fiabilité de : ' + str((round(accuracy_score(y_test, y_pred), 2) * 100)) + "%, il permet de prédire selon des informations entrées par l'utilisateur, si un passager du titanic aurait survécu ou non.")
+Label(root, textvariable = intro_txt, wraplength=475, fg="aquamarine2", font=('broadway 13 bold')).place(relx=0.5, rely=0.02, anchor=N)
+
+# Input classe 
+Label(root, text = "En quelle classe etait le passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=0, pady=(90, 0), padx=10)
+v_class = IntVar()
+v_class.set(1)                                      
+p_class = ["1", "2", "3"]
+for val in range(len(p_class)):    
+    Radiobutton(root, 
+                   text=p_class[val],
+                   variable=v_class,
+                   value=int(p_class[val])).grid(column=val+1, row=0, pady=(90, 0))
+
+# Input sexe
+Label(root, text = "Quel etait le sexe du passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=1, pady=(20, 0), padx=0)
+v_sex = IntVar()
+v_sex.set(0)
+p_sex = [["Femme", 0], ["Homme", 1]]
+for val in range(len(p_sex)):    
+    if val == 0:
+        Radiobutton(root, 
+                   text=p_sex[val][0],
+                   variable=v_sex,
+                   value=int(p_sex[val][1])).grid(column=val+1, row=1, pady=(20, 0))
+    else:
+        Radiobutton(root, 
+                   text=p_sex[val][0],
+                   variable=v_sex,
+                   value=int(p_sex[val][1])).grid(column=val+1, row=1, pady=(20, 0), columnspan=2)
+    
+# Input age
+Label(root, text = "Quel etait l'age du passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=2, pady=(20, 0), padx=0)
+v_age = Scale(root, from_=1, to=100, orient=HORIZONTAL, length=200, width=5, border=0)
+v_age.set(30)
+v_age.grid(column=1, row=2, pady=(20, 0), padx=0, columnspan=3)
+
+# Input sibsp
+Label(root, text = "Freres/soeurs ou mari/femme à bord ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=3, pady=(20, 0), padx=(10, 0))
+v_sibsp = Scale(root, from_=0, to=10, orient=HORIZONTAL, length=150, width=5, border=0)
+v_sibsp.set(0)
+v_sibsp.grid(column=1, row=3, pady=(20, 0), padx=0, columnspan=3)
+
+# Input parch
+Label(root, text = "Enfants/parents à bord ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=4, pady=(20, 0), padx=(10, 0))
+v_parch = Scale(root, from_=0, to=10, orient=HORIZONTAL, length=150, width=5, border=0)
+v_parch.set(0)
+v_parch.grid(column=1, row=4, pady=(20, 0), padx=0, columnspan=3)
+
+# Input embark
+Label(root, text = "D'où est entré le passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=5, pady=(20, 0), padx=0)
+v_emb = IntVar()
+v_emb.set(0)
+p_emb = [["S.", 0], ["C.", 1], ["Q.", 2]]
+for val in range(len(p_emb)):    
+    Radiobutton(root, 
+                text=p_emb[val][0],
+                variable=v_emb,
+                value=int(p_emb[val][1])).grid(column=val+1, row=5, pady=(20, 0))
+
+Button(root, text="Découvrir le résultat", command=calc_proba).grid(column=0, row=6, pady=(40, 0), padx=10)
+
+root.mainloop()
