@@ -5,7 +5,6 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 from tkinter import *
 from tkinter import messagebox
-from PIL import Image, ImageTk
 
 '''
 Variable	Definition	                                    Key
@@ -61,16 +60,14 @@ def calc_proba():
     global v_sibsp
     global v_parch
     global v_emb
-    SurvieImg = ImageTk.PhotoImage(Image.open("Images/img2.png"))
-    MortImg = ImageTk.PhotoImage(Image.open("Images/img1.png"))
                                   
     potential_passenger_data = []
     potential_passenger_data.extend([v_class.get(), v_sex.get(), v_age.get(), v_sibsp.get(), v_parch.get(), v_emb.get()])
 
     if int(model.predict([potential_passenger_data])):
-        messagebox.showinfo( "Resultat", "Le passager aurait surement survécu !", image = SurvieImg)
+        messagebox.showinfo( "Resultat", "Le passager aurait surement survécu !")
     else:
-        messagebox.showinfo( "Resultat", "Le passager n'aurait probablement pas survécu !", image = MortImg)
+        messagebox.showinfo( "Resultat", "Le passager n'aurait probablement pas survécu !")
         
        
 # __Main__:
@@ -104,74 +101,81 @@ if not (round(accuracy_score(y_test, y_pred), 10) * 100) >= 65:
 # initialiser la fenêtre tkinter
 root = Tk()
 root.title("Survivants du Titanic")   # donner un nom àla fenêtre
-root.iconbitmap('/Images/boat.ico')
 root.geometry("500x450")    # définir une taille à la fenêtre
 root.resizable(False, False) #Pas possible de mofidier la taille de la fenêtre
-root.attributes('-alpha', 0.95)
+root.configure(background="#292020")
 root.grid()
 
 # print notre intro
 intro_txt = StringVar()
 intro_txt.set('Ce programme à une fiabilité de : ' + str((round(accuracy_score(y_test, y_pred), 2) * 100)) + "%, il permet de prédire selon des informations entrées par l'utilisateur, si un passager du titanic aurait survécu ou non.")
-Label(root, textvariable = intro_txt, wraplength=475, fg="aquamarine2", font=('broadway 13 bold')).place(relx=0.5, rely=0.02, anchor=N)
+Label(root, textvariable = intro_txt, wraplength=475, bg="#292020", fg="white", font=('calibri 13 bold')).place(relx=0.5, rely=0.02, anchor=N)
 
 # Input classe 
-Label(root, text = "En quelle classe etait le passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=0, pady=(90, 0), padx=10)
+Label(root, text = "En quelle classe etait le passager ?", wraplength=300, bg="#292020", fg="CadetBlue1", font=('calibri', 10), justify="left").grid(column=0, row=0, pady=(90, 0), padx=10)
 v_class = IntVar()
 v_class.set(1)                                      
 p_class = ["1", "2", "3"]
 for val in range(len(p_class)):    
     Radiobutton(root, 
-                   text=p_class[val],
-                   variable=v_class,
-                   value=int(p_class[val])).grid(column=val+1, row=0, pady=(90, 0))
+                bg="#292020",
+                fg="grey",
+                text=p_class[val],
+                variable=v_class,
+                value=int(p_class[val])).grid(column=val+1, row=0, pady=(90, 0))
 
 # Input sexe
-Label(root, text = "Quel etait le sexe du passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=1, pady=(20, 0), padx=0)
+Label(root, text = "Quel etait le sexe du passager ?", wraplength=300, bg="#292020", fg="CadetBlue1", font=('calibri', 10), justify="left").grid(column=0, row=1, pady=(20, 0), padx=0)
 v_sex = IntVar()
 v_sex.set(0)
 p_sex = [["Femme", 0], ["Homme", 1]]
 for val in range(len(p_sex)):    
     if val == 0:
         Radiobutton(root, 
+                    bg="#292020",
+                    fg="grey",
                    text=p_sex[val][0],
                    variable=v_sex,
                    value=int(p_sex[val][1])).grid(column=val+1, row=1, pady=(20, 0))
     else:
         Radiobutton(root, 
+                    bg="#292020",
+                    fg="grey",
                    text=p_sex[val][0],
                    variable=v_sex,
                    value=int(p_sex[val][1])).grid(column=val+1, row=1, pady=(20, 0), columnspan=2)
     
 # Input age
-Label(root, text = "Quel etait l'age du passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=2, pady=(20, 0), padx=0)
-v_age = Scale(root, from_=1, to=100, orient=HORIZONTAL, length=200, width=5, border=0)
+Label(root, text = "Quel etait l'age du passager ?", wraplength=300, bg="#292020", fg="CadetBlue1", font=('calibri', 10), justify="left").grid(column=0, row=2, pady=(20, 0), padx=0)
+v_age = Scale(root, from_=1, to=100, orient=HORIZONTAL, length=200, bg="#292020", fg="grey", width=5, border=0)
 v_age.set(30)
 v_age.grid(column=1, row=2, pady=(20, 0), padx=0, columnspan=3)
 
 # Input sibsp
-Label(root, text = "Freres/soeurs ou mari/femme à bord ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=3, pady=(20, 0), padx=(10, 0))
-v_sibsp = Scale(root, from_=0, to=10, orient=HORIZONTAL, length=150, width=5, border=0)
+Label(root, text = "Freres/soeurs ou mari/femme à bord ?", wraplength=300, bg="#292020", fg="CadetBlue1", font=('calibri', 10), justify="left").grid(column=0, row=3, pady=(20, 0), padx=(10, 0))
+v_sibsp = Scale(root, from_=0, to=10, orient=HORIZONTAL, length=150, bg="#292020", fg="grey", width=5, border=0)
 v_sibsp.set(0)
 v_sibsp.grid(column=1, row=3, pady=(20, 0), padx=0, columnspan=3)
 
 # Input parch
-Label(root, text = "Enfants/parents à bord ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=4, pady=(20, 0), padx=(10, 0))
-v_parch = Scale(root, from_=0, to=10, orient=HORIZONTAL, length=150, width=5, border=0)
+Label(root, text = "Enfants/parents à bord ?", wraplength=300, bg="#292020", fg="CadetBlue1", font=('calibri', 10), justify="left").grid(column=0, row=4, pady=(20, 0), padx=(10, 0))
+v_parch = Scale(root, from_=0, to=10, orient=HORIZONTAL, length=150, bg="#292020", fg="grey", width=5, border=0)
 v_parch.set(0)
 v_parch.grid(column=1, row=4, pady=(20, 0), padx=0, columnspan=3)
 
 # Input embark
-Label(root, text = "D'où est entré le passager ?", wraplength=300, fg="CadetBlue1", font=('broadway', 13), justify="left").grid(column=0, row=5, pady=(20, 0), padx=0)
+Label(root, text = "D'où est entré le passager ?", wraplength=300, bg="#292020", fg="CadetBlue1", font=('calibri', 10), justify="left").grid(column=0, row=5, pady=(20, 0), padx=0)
 v_emb = IntVar()
 v_emb.set(0)
 p_emb = [["S.", 0], ["C.", 1], ["Q.", 2]]
 for val in range(len(p_emb)):    
     Radiobutton(root, 
+                bg="#292020", 
+                fg="grey",
                 text=p_emb[val][0],
                 variable=v_emb,
                 value=int(p_emb[val][1])).grid(column=val+1, row=5, pady=(20, 0))
 
-Button(root, text="Découvrir le résultat", command=calc_proba).grid(column=0, row=6, pady=(40, 0), padx=10)
+Button(root, text="Découvrir le résultat", command=calc_proba).grid(column=1, row=6, pady=(40, 0), columnspan=3, padx=10)
 
 root.mainloop()
